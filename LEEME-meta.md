@@ -3,7 +3,7 @@
 Mientras esto no esté, se usa el plan B: `python -m galno_ig exportar <lunes>` y se programa a mano en Meta Business Suite.
 
 1. **Cuenta profesional** de Instagram de Galno Assist (empresa o creador) **vinculada a la página de Facebook** de Galno Assist. En la página, tu usuario necesita control total o la tarea «Contenido». La página no puede exigir *Page Publishing Authorization* pendiente.
-2. **App de Meta**: la misma de Sherlock. Agregar el producto Instagram (API con inicio de sesión de Facebook). Vos tenés que tener rol en la app (admin). Con **acceso estándar** alcanza: la app sólo publica en tu propia cuenta, no hace falta revisión de Meta.
+2. **App de Meta**: tu app de Meta (la misma que ya usás para leer Instagram). Agregar el producto Instagram (API con inicio de sesión de Facebook). Vos tenés que tener rol en la app (admin). Con **acceso estándar** alcanza: la app sólo publica en tu propia cuenta, no hace falta revisión de Meta.
 3. **Permisos** del token: `instagram_basic`, `instagram_content_publish`, `pages_read_engagement` (Sherlock usa además los de Business Discovery).
 4. **Token**: en el Explorador de la Graph API generar un token de usuario con esos permisos → cambiarlo por uno de larga duración → pedir `/me/accounts` y tomar el **token de la página**. Revisar en el *Depurador de tokens* cuándo vence (los de página sacados de un token largo suelen no vencer; si vence, anotar la fecha para renovarlo).
 5. **IG_USER_ID**: `GET /{page-id}?fields=instagram_business_account` → el `id`.
