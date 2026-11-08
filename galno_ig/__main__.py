@@ -32,8 +32,10 @@ def _duracion_audio(ruta: Path) -> float:
 
 def cmd_semana(a):
     lunes = date.fromisoformat(a.lunes)
-    posts = posts_de_semana(cargar_cola(COLA), lunes)
-    print(vista_html(posts, SALIDA / f"semana-{lunes}.html"))
+    cola = cargar_cola(COLA)
+    semana = posts_de_semana(cola, lunes)
+    reservas = [p for p in cola if p.reserva and p not in semana and p.estado in ("borrador", "aprobado")]
+    print(vista_html(semana + reservas, SALIDA / f"semana-{lunes}.html"))
 
 
 def cmd_aprobar(a):

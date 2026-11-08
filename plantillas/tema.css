@@ -44,3 +44,6 @@ body {
 .marca span { font-size: 28px; color: var(--secundario); }
 .aviso-ejemplo { position: absolute; top: 36px; right: var(--margen); font-size: 22px; letter-spacing: .06em; text-transform: uppercase; color: var(--suave); }
 .oscuro .aviso-ejemplo { color: var(--oscuro-secundario); }
+.oscuro .cuerpo, .oscuro .titulo { color: var(--oscuro-texto); }
+.oscuro .cuerpo { color: var(--oscuro-secundario); }
+.oscuro .cuerpo li { border-bottom-color: #333; }

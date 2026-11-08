@@ -1,0 +1,21 @@
+fecha_hora: '2026-11-17T20:00:00-03:00'
+tipo: reel
+archivos:
+- reel.mp4
+texto: 'Negocio de ejemplo: así pide un cliente en una pizzería sin mandar un audio.
+
+
+  Ve la carta con precios, arma el pedido y te llega por WhatsApp completo y por escrito. Vos lo preparás, sin anotar nada.
+
+
+  Sirve para pizzerías, rotiserías, heladerías y cualquier local que tome pedidos. Escribime por DM.'
+hashtags:
+- pizzeria
+- pedidosonline
+- zonanorte
+estado: borrador
+ejemplo: true
+reserva: false
+necesita_audio: true
+media_id: null
+error: null

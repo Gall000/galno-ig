@@ -1,0 +1,27 @@
+fecha_hora: '2026-11-22T11:00:00-03:00'
+tipo: carrusel
+archivos:
+- 01.jpg
+- 02.jpg
+- 03.jpg
+- 04.jpg
+- 05.jpg
+- 06.jpg
+- 07.jpg
+texto: 'Servicio de la semana: turnos online.
+
+
+  Para barberías, peluquerías, centros de estética, talleres y consultorios: el cliente ve los horarios libres y reserva solo, sin ida y vuelta de mensajes.
+
+
+  Escribime por DM y te muestro cómo quedaría con tus horarios.'
+hashtags:
+- turnosonline
+- barberia
+- negocioslocales
+estado: borrador
+ejemplo: false
+reserva: false
+necesita_audio: false
+media_id: null
+error: null

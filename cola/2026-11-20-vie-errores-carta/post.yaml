@@ -1,0 +1,27 @@
+fecha_hora: '2026-11-20T12:30:00-03:00'
+tipo: carrusel
+archivos:
+- 01.jpg
+- 02.jpg
+- 03.jpg
+- 04.jpg
+- 05.jpg
+- 06.jpg
+- 07.jpg
+texto: 'La carta digital no es subir una foto del menú impreso.
+
+
+  Estos son los 5 errores que más veo en bares, pizzerías y cafeterías. Si tu carta tiene 2 o más, el cliente se va antes de pedir.
+
+
+  Escribime por DM si querés que mire la tuya.'
+hashtags:
+- gastronomia
+- cartadigital
+- negocioslocales
+estado: borrador
+ejemplo: false
+reserva: false
+necesita_audio: false
+media_id: null
+error: null

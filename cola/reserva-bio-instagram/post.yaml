@@ -1,0 +1,23 @@
+fecha_hora: '2026-11-23T08:30:00-03:00'
+tipo: carrusel
+archivos:
+- 01.jpg
+- 02.jpg
+- 03.jpg
+- 04.jpg
+- 05.jpg
+- 06.jpg
+- 07.jpg
+texto: 'Tu bio de Instagram es lo primero que lee un cliente nuevo. En pocas líneas tiene que contestar 4 cosas.
+
+
+  Si la tuya no las contesta, escribime por dm y la revisamos.'
+hashtags:
+- negocioslocales
+- instagramparanegocios
+estado: borrador
+ejemplo: false
+reserva: true
+necesita_audio: false
+media_id: null
+error: null

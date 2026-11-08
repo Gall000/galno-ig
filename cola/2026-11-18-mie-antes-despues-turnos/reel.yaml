@@ -1,0 +1,43 @@
+plantilla: reel-antes-despues
+duracion_s: 26
+datos:
+  titulo: Diez mensajes para sacar un turno
+  negocio: Barbería Ejemplo
+  antes:
+  - texto: Hola! Tenés lugar el sábado?
+    yo: false
+  - texto: Hola! A qué hora te queda bien?
+    yo: true
+  - texto: A la tarde, tipo 4?
+    yo: false
+  - texto: A las 4 no, tengo 17:30
+    yo: true
+  - texto: Uh, y a la mañana?
+    yo: false
+  despues_titulo: Sábado 21 · Corte
+  turnos:
+  - hora: '10:00'
+    estado: tomado
+  - hora: '11:00'
+    estado: libre
+  - hora: '16:00'
+    estado: tomado
+  - hora: '17:30'
+    estado: libre
+  - hora: '18:30'
+    estado: libre
+  elegido: 1
+  confirmacion: Turno confirmado · Sáb 11:00
+  cierre_titulo: Tu agenda se llena sola.
+  cierre_bajada: Escribime por DM y la armamos con tus horarios.
+  subtitulos:
+  - desde_ms: 0
+    hasta_ms: 10500
+    texto: 'Antes: ida y vuelta mientras estás atendiendo'
+  - desde_ms: 10500
+    hasta_ms: 17000
+    texto: 'Después: el cliente ve los horarios libres'
+  - desde_ms: 17000
+    hasta_ms: 23500
+    texto: Elige uno y queda confirmado
+  ejemplo: true

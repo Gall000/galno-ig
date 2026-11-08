@@ -36,6 +36,9 @@ def _miniatura(p: Post) -> str:
     ruta = (Path(p.carpeta) / p.archivos[0]).resolve()
     if p.tipo == "reel":
         return f"<video src='{ruta.as_uri()}' controls muted preload='metadata'></video>"
+    if p.tipo == "carrusel":
+        imgs = "".join(f"<img src='{(Path(p.carpeta) / a).resolve().as_uri()}' alt=''>" for a in p.archivos)
+        return f"<div class='tira'>{imgs}</div>"
     return f"<img src='{ruta.as_uri()}' alt=''>"
 
 
@@ -67,6 +70,7 @@ article{{background:#fff;border:1px solid #ddd;padding:12px}}
 article.aprobado{{border-color:#1a7f37}} article.error{{border-color:#c00}}
 img,video{{width:100%;aspect-ratio:4/5;object-fit:cover;background:#eee;display:block;margin:8px 0}}
 video{{aspect-ratio:9/16}}
+.tira{{display:flex;overflow-x:auto;gap:6px;scroll-snap-type:x mandatory}} .tira img{{flex:0 0 100%;scroll-snap-align:start}}
 pre{{white-space:pre-wrap;font-family:inherit;font-size:13px;background:#fafafa;padding:8px;margin:0}}
 .id{{font-size:12px;color:#666}} .prob{{color:#c00;font-size:13px}} .estado{{text-transform:uppercase;font-size:12px}}
 </style></head><body><h1>Semana para aprobar</h1><main>{''.join(tarjetas)}</main></body></html>"""
