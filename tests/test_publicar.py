@@ -166,3 +166,27 @@ def test_correr_marca_vencidos(tmp_path):
     correr(tmp_path, AHORA, Meta("IG", "T"), BASE)
     assert cargar_post(tmp_path / "cola" / "viejo").estado == "vencido"
     assert len(responses.calls) == 0
+
+
+def test_ci_sin_credenciales_modo_prueba(tmp_path, monkeypatch, capsys):
+    from galno_ig import ci
+
+    _post(tmp_path, "a")
+    for v in ("IG_USER_ID", "IG_TOKEN"):
+        monkeypatch.delenv(v, raising=False)
+    monkeypatch.setenv("BASE_URL", BASE)
+    assert ci.main(raiz=tmp_path, subir=False, ahora=AHORA) == 0
+    assert "modo prueba" in capsys.readouterr().out
+    assert cargar_post(tmp_path / "cola" / "a").estado == "aprobado"
+
+
+def test_ci_sale_1_si_hay_error(tmp_path, monkeypatch):
+    from galno_ig import ci
+
+    _post(tmp_path, "a")
+    monkeypatch.setenv("IG_USER_ID", "IG")
+    monkeypatch.setenv("IG_TOKEN", "T")
+    monkeypatch.setenv("BASE_URL", BASE)
+    with responses.RequestsMock() as rs:
+        rs.post(f"{G}/IG/media", status=400, json={"error": {"message": "x"}})
+        assert ci.main(raiz=tmp_path, subir=False, ahora=AHORA) == 1

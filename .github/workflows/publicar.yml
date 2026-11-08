@@ -1,0 +1,37 @@
+name: publicar
+
+on:
+  schedule:
+    # Horas de Argentina (UTC-3): 8:30, 11:00, 12:30 y 20:00. GitHub puede atrasarse hasta ~30 min.
+    - cron: "30 11 * * *"
+    - cron: "0 14 * * *"
+    - cron: "30 15 * * *"
+    - cron: "0 23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml requests
+      - name: Configurar git para subir estados
+        run: |
+          git config user.name "galno-ig-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Publicar lo que corresponde
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          BASE_URL: ${{ vars.BASE_URL }}
+        run: python -m galno_ig.ci
