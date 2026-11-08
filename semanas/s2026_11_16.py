@@ -31,7 +31,7 @@ def cierre(titulo: str, bajada: str = "Si te sirvió, guardalo o mandáselo a al
 CARRUSELES = {
     "2026-11-16-lun-senales-whatsapp": dict(
         fecha_hora=fh(16, 8, 30),
-        hashtags=["negocioslocales", "whatsappbusiness", "zonanorte"],
+        hashtags=["negocioslocales", "whatsappbusiness", "emprendedores"],
         texto=(
             "Si tu local vende por WhatsApp, estas 3 señales te dicen que se te están yendo pedidos.\n\n"
             "Ninguna se arregla trabajando más horas: se arreglan dejando a la vista lo que el cliente pregunta siempre.\n\n"
@@ -112,7 +112,7 @@ CARRUSELES = {
             {"etiqueta": "2", "titulo": "Dónde estás", "cuerpo": "Barrio o zona de envío. El que es de otra zona se ahorra preguntar."},
             {"etiqueta": "3", "titulo": "Cuándo atendés", "cuerpo": "Días y horario. Si cambia seguido, que el link lo muestre actualizado."},
             {"etiqueta": "4", "titulo": "Cómo te compran", "cuerpo": "Un solo link claro: carta, catálogo o turnos. No cinco links distintos."},
-            {"etiqueta": "Ejemplo", "titulo": "Pizzería · Olivos", "cuerpo": "A la piedra, con envío a Olivos y Vicente López. Mar a dom, de 19 a 24. Pedí acá ↓"},
+            {"etiqueta": "Ejemplo", "titulo": "Pizzería · tu barrio", "cuerpo": "A la piedra, con envío en la zona. Mar a dom, de 19 a 24. Pedí acá ↓"},
             cierre("Revisá tu bio hoy"),
         ],
     ),
@@ -143,7 +143,7 @@ PLACAS = {
 REELS = {
     "2026-11-17-mar-demo-pedidos": dict(
         fecha_hora=fh(17, 20), ejemplo=True,
-        hashtags=["pizzeria", "pedidosonline", "zonanorte"],
+        hashtags=["pizzeria", "pedidosonline", "gastronomia"],
         texto=(
             "Negocio de ejemplo: así pide un cliente en una pizzería sin mandar un audio.\n\n"
             "Ve la carta con precios, arma el pedido y te llega por WhatsApp completo y por escrito. Vos lo preparás, sin anotar nada.\n\n"
@@ -174,7 +174,7 @@ REELS = {
     ),
     "2026-11-18-mie-antes-despues-turnos": dict(
         fecha_hora=fh(18, 20), ejemplo=True,
-        hashtags=["barberia", "turnosonline", "zonanorte"],
+        hashtags=["barberia", "turnosonline", "emprendedores"],
         texto=(
             "Negocio de ejemplo: una barbería antes y después de tener turnos online.\n\n"
             "Antes: diez mensajes para encontrar un horario, mientras estás cortando. Después: el cliente ve lo libre y reserva solo.\n\n"
