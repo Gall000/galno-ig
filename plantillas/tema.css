@@ -1,0 +1,46 @@
+/* Tema PROVISORIO. La marca nueva de Galno se aplica cambiando solo este archivo. */
+:root {
+  --fondo: #FFFFFF;
+  --texto: #000000;
+  --secundario: #4D4D4D;
+  --suave: #808080;
+  --borde: #E5E5E5;
+  --fondo-alt: #F5F5F5;
+  --oscuro-fondo: #0A0A0A;
+  --oscuro-texto: #FFFFFF;
+  --oscuro-secundario: #999999;
+  --acento: #000000;
+  --fuente: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --radio: 0px;
+  --margen: 88px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1350px; overflow: hidden; }
+body {
+  font-family: var(--fuente);
+  background: var(--fondo);
+  color: var(--texto);
+  -webkit-font-smoothing: antialiased;
+}
+.lienzo { position: relative; width: 100%; height: 100%; padding: var(--margen); display: flex; flex-direction: column; }
+.oscuro { background: var(--oscuro-fondo); color: var(--oscuro-texto); }
+.oscuro .etiqueta, .oscuro .bajada, .oscuro .marca span, .oscuro .pie { color: var(--oscuro-secundario); }
+.oscuro .marca svg { fill: var(--oscuro-texto); }
+
+.etiqueta { font-size: 26px; letter-spacing: .08em; text-transform: uppercase; color: var(--secundario); padding-bottom: 22px; border-bottom: 2px solid currentColor; }
+.titulo { font-size: 96px; line-height: 1.04; font-weight: 700; letter-spacing: -.025em; margin-top: 64px; }
+.titulo em { font-style: normal; color: var(--suave); }
+.bajada { font-size: 38px; line-height: 1.35; color: var(--secundario); margin-top: 40px; max-width: 860px; }
+.cuerpo { font-size: 42px; line-height: 1.4; margin-top: 48px; color: var(--texto); }
+.cuerpo ul { list-style: none; }
+.cuerpo li { padding: 22px 0; border-bottom: 2px solid var(--borde); display: flex; gap: 28px; }
+.cuerpo li b { min-width: 56px; }
+
+.pie { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; padding-top: 32px; border-top: 2px solid var(--borde); font-size: 26px; color: var(--suave); }
+.oscuro .pie { border-top-color: #333; }
+.marca { display: flex; flex-direction: column; gap: 10px; }
+.marca svg { height: 34px; width: auto; fill: var(--texto); }
+.marca span { font-size: 28px; color: var(--secundario); }
+.aviso-ejemplo { position: absolute; top: 36px; right: var(--margen); font-size: 22px; letter-spacing: .06em; text-transform: uppercase; color: var(--suave); }
+.oscuro .aviso-ejemplo { color: var(--oscuro-secundario); }

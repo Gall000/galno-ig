@@ -1,0 +1,9 @@
+{% extends "_base.html" %}
+{# Campos: etiqueta, titulo, cuerpo (texto) o items (lista), n, total, fondo, ejemplo #}
+{% block contenido %}
+  {% if etiqueta %}<div class="etiqueta">{{ etiqueta }}</div>{% endif %}
+  {% if titulo %}<h1 class="titulo" {% if not cuerpo and not items %}style="font-size:108px;margin-top:140px"{% else %}style="font-size:76px"{% endif %}>{{ titulo }}</h1>{% endif %}
+  {% if cuerpo %}<div class="cuerpo">{{ cuerpo }}</div>{% endif %}
+  {% if items %}<div class="cuerpo"><ul>{% for it in items %}<li><b>{{ loop.index }}</b><span>{{ it }}</span></li>{% endfor %}</ul></div>{% endif %}
+{% endblock %}
+{% block pie %}{% if n and total %}{{ n }} / {{ total }}{% if n < total %} →{% endif %}{% endif %}{% endblock %}

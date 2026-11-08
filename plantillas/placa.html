@@ -1,0 +1,8 @@
+{% extends "_base.html" %}
+{# Campos: etiqueta, titulo, bajada, fondo (claro|oscuro), ejemplo #}
+{% block contenido %}
+  {% if etiqueta %}<div class="etiqueta">{{ etiqueta }}</div>{% endif %}
+  <h1 class="titulo" style="margin-top: 140px">{{ titulo }}</h1>
+  {% if bajada %}<p class="bajada">{{ bajada }}</p>{% endif %}
+{% endblock %}
+{% block pie %}Escribime por DM{% endblock %}
