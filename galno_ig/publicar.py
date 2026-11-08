@@ -4,6 +4,7 @@ Sólo publica lo que Lucas aprobó. Nunca loguea el token.
 """
 from __future__ import annotations
 
+import hashlib
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -13,11 +14,13 @@ import requests
 
 from galno_ig.cola import Post, caption, cargar_cola, guardar_post
 
-ATRASO_MAX = timedelta(hours=12)
+# 13 h: cubre el hueco entre la corrida de las 20 h y la de las 8:30 si una se saltea.
+ATRASO_MAX = timedelta(hours=13)
 
 
 def _espera_audio(p: Post) -> bool:
-    return p.tipo == "reel" and p.necesita_audio and bool(p.extra.get("contenido_aprobado"))
+    return (p.tipo == "reel" and p.estado == "borrador" and p.necesita_audio
+            and bool(p.extra.get("contenido_aprobado")))
 
 
 def pendientes(cola: list[Post], ahora: datetime) -> tuple[list[Post], list[Post]]:
@@ -29,6 +32,8 @@ def pendientes(cola: list[Post], ahora: datetime) -> tuple[list[Post], list[Post
         if p.reserva or p.fecha_hora > ahora:
             continue
         atrasado = ahora - p.fecha_hora > ATRASO_MAX
+        if p.estado == "aprobado" and p.tipo == "reel" and p.necesita_audio:
+            continue  # un reel sin voz nunca sale, aunque alguien lo haya marcado aprobado
         if p.estado == "aprobado":
             (a_vencer if atrasado else a_publicar).append(p)
         elif _espera_audio(p):
@@ -41,7 +46,13 @@ def pendientes(cola: list[Post], ahora: datetime) -> tuple[list[Post], list[Post
 
 
 def url_publica(post: Post, archivo: str, base: str) -> str:
-    return f"{base.rstrip('/')}/cola/{post.id}/{archivo}"
+    """URL de GitHub Pages con ?v=<hash del contenido>: si el archivo cambia (p. ej. el reel con voz),
+    cambia la URL y no se sirve una copia vieja de la caché."""
+    url = f"{base.rstrip('/')}/cola/{post.id}/{archivo}"
+    ruta = Path(post.carpeta) / archivo
+    if ruta.exists():
+        url += "?v=" + hashlib.sha1(ruta.read_bytes()).hexdigest()[:10]
+    return url
 
 
 class Meta:
@@ -110,11 +121,13 @@ def correr(
     meta: Meta | None,
     base_url: str,
     al_guardar: Callable[[], None] | None = None,
+    verificar_url: Callable[[str, int], bool] | None = None,
 ) -> list[str]:
     al_guardar = al_guardar or (lambda: None)
-    cola = cargar_cola(Path(raiz) / "cola")
+    errores: list[str] = []
+    cola = cargar_cola(Path(raiz) / "cola", errores)
     a_publicar, a_vencer = pendientes(cola, ahora)
-    log: list[str] = []
+    log: list[str] = [f"ERROR {e}" for e in errores]
     if meta is None:
         log.append("modo prueba: sin IG_USER_ID/IG_TOKEN, no se publica ni se cambia nada")
         log += [f"publicaría {p.id} ({p.tipo}, {p.fecha_hora:%d/%m %H:%M})" for p in a_publicar]
@@ -128,9 +141,20 @@ def correr(
         log.append(f"vencido {p.id}")
 
     for p in a_publicar:
+        if verificar_url and not all(
+            verificar_url(url_publica(p, a, base_url), (Path(p.carpeta) / a).stat().st_size) for a in p.archivos
+        ):
+            log.append(f"esperando GitHub Pages: {p.id} (todavía no sirve la versión actual de los archivos)")
+            continue
         p.estado = "publicando"
         guardar_post(p)
-        al_guardar()  # se sube este estado antes de publicar: evita doble publicación
+        try:
+            al_guardar()  # se sube este estado antes de publicar: evita doble publicación
+        except Exception as exc:  # noqa: BLE001
+            p.estado = "aprobado"
+            guardar_post(p)
+            log.append(f"ERROR {p.id}: no pude subir el estado 'publicando', no se publicó ({exc})")
+            continue
         try:
             p.media_id = _publicar_uno(meta, p, base_url)
             p.estado, p.error = "publicado", None
@@ -139,6 +163,6 @@ def correr(
             p.estado, p.error = "error", str(exc)
             log.append(f"ERROR {p.id}: {exc}")
         guardar_post(p)
-    if not a_publicar and not a_vencer:
+    if not a_publicar and not a_vencer and not errores:
         log.append("nada para publicar")
     return log

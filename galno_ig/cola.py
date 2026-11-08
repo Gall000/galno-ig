@@ -15,7 +15,7 @@ AVISO_EJEMPLO = "Negocio de ejemplo"
 HASHTAGS_MIN, HASHTAGS_MAX = 1, 3
 CARRUSEL_MIN, CARRUSEL_MAX = 2, 20
 MAX_IMAGEN = 8 * 1024 * 1024
-MAX_VIDEO = 100 * 1024 * 1024
+MAX_VIDEO = 100 * 1024 * 1024  # límite duro de GitHub por archivo
 
 # Campos que se guardan en post.yaml (id y carpeta salen del lugar en disco).
 _CAMPOS = (
@@ -76,9 +76,20 @@ def guardar_post(post: Post) -> None:
     (Path(post.carpeta) / "post.yaml").write_text(texto, encoding="utf-8")
 
 
-def cargar_cola(raiz: Path) -> list[Post]:
+def cargar_cola(raiz: Path, errores: list[str] | None = None) -> list[Post]:
+    """Carga todas las carpetas con post.yaml. Una carpeta rota no frena a las demás:
+    su problema se agrega a `errores` (si se pasa) o se relanza."""
     raiz = Path(raiz)
-    posts = [cargar_post(c) for c in raiz.iterdir() if c.is_dir() and (c / "post.yaml").exists()]
+    posts = []
+    for c in sorted(raiz.iterdir()):
+        if not (c.is_dir() and (c / "post.yaml").exists()):
+            continue
+        try:
+            posts.append(cargar_post(c))
+        except Exception as exc:  # noqa: BLE001
+            if errores is None:
+                raise
+            errores.append(f"{c.name}: post.yaml inválido ({exc!r})")
     return sorted(posts, key=lambda p: (p.fecha_hora, p.id))
 
 

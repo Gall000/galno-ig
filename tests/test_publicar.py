@@ -39,8 +39,8 @@ def test_pendientes_toma_aprobados_vencidos_hasta_12h(tmp_path):
     assert ids(pub) == ["b", "a"] and ven == []
 
 
-def test_pendientes_marca_vencido_mas_de_12h(tmp_path):
-    pub, ven = pendientes([_post(tmp_path, "viejo", 12.5)], AHORA)
+def test_pendientes_marca_vencido_mas_de_13h(tmp_path):
+    pub, ven = pendientes([_post(tmp_path, "viejo", 13.5)], AHORA)
     assert pub == [] and ids(ven) == ["viejo"]
 
 
@@ -124,7 +124,7 @@ def test_error_de_api_no_filtra_token():
 
 def test_url_publica(tmp_path):
     p = _post(tmp_path, "2026-11-17-mar-demo")
-    assert url_publica(p, "01.jpg", BASE + "/") == f"{BASE}/cola/2026-11-17-mar-demo/01.jpg"
+    assert url_publica(p, "01.jpg", BASE + "/").startswith(f"{BASE}/cola/2026-11-17-mar-demo/01.jpg?v=")
 
 
 @responses.activate
@@ -138,7 +138,7 @@ def test_correr_feliz_queda_publicado(tmp_path):
     p = cargar_post(tmp_path / "cola" / "a")
     assert p.estado == "publicado" and p.media_id == "M1"
     assert estados[0] == "publicando"
-    assert _form(responses.calls[0])["image_url"] == f"{BASE}/cola/a/01.jpg"
+    assert _form(responses.calls[0])["image_url"].startswith(f"{BASE}/cola/a/01.jpg?v=")
     assert any("publicado" in x for x in log)
 
 
@@ -189,4 +189,89 @@ def test_ci_sale_1_si_hay_error(tmp_path, monkeypatch):
     monkeypatch.setenv("BASE_URL", BASE)
     with responses.RequestsMock() as rs:
         rs.post(f"{G}/IG/media", status=400, json={"error": {"message": "x"}})
-        assert ci.main(raiz=tmp_path, subir=False, ahora=AHORA) == 1
+        assert ci.main(raiz=tmp_path, subir=False, ahora=AHORA, verificar_url=lambda u, t: True) == 1
+
+
+# --- correcciones de la revisión final ---------------------------------------
+
+def _reel_esperando(raiz, id="reel", hace_h=0.1, **cambios):
+    datos = dict(tipo="reel", archivos=["reel.mp4"], estado="borrador", necesita_audio=True,
+                 extra={"contenido_aprobado": True})
+    datos.update(cambios)
+    return _post(raiz, id, hace_h, **datos)
+
+
+def test_reel_ya_vencido_no_gasta_otra_reserva(tmp_path):
+    reel = _reel_esperando(tmp_path, estado="vencido")
+    res = _post(tmp_path, "res", 48, reserva=True)
+    assert pendientes([res, reel], AHORA) == ([], [])
+
+
+def test_reel_aprobado_sin_audio_nunca_sale(tmp_path):
+    reel = _reel_esperando(tmp_path, estado="aprobado")
+    pub, _ = pendientes([reel], AHORA)
+    assert pub == []
+
+
+def test_atraso_de_12_y_media_horas_todavia_sale(tmp_path):
+    pub, ven = pendientes([_post(tmp_path, "a", 12.5)], AHORA)
+    assert ids(pub) == ["a"] and ven == []
+
+
+def test_url_publica_lleva_version_del_contenido(tmp_path):
+    p = _post(tmp_path, "a")
+    u1 = url_publica(p, "01.jpg", BASE)
+    (p.carpeta / "01.jpg").write_bytes(b"otro contenido")
+    u2 = url_publica(p, "01.jpg", BASE)
+    assert u1.startswith(f"{BASE}/cola/a/01.jpg?v=") and u1 != u2
+
+
+def test_si_pages_no_tiene_el_archivo_no_publica(tmp_path):
+    _post(tmp_path, "a")
+    log = correr(tmp_path, AHORA, Meta("IG", "T"), BASE, verificar_url=lambda url, tam: False)
+    assert cargar_post(tmp_path / "cola" / "a").estado == "aprobado"
+    assert any("Pages" in x for x in log)
+
+
+@responses.activate
+def test_si_falla_subir_publicando_no_publica(tmp_path):
+    _post(tmp_path, "a")
+
+    def falla():
+        raise RuntimeError("push rechazado")
+
+    log = correr(tmp_path, AHORA, Meta("IG", "T"), BASE, al_guardar=falla)
+    assert len(responses.calls) == 0
+    assert cargar_post(tmp_path / "cola" / "a").estado == "aprobado"
+    assert any(x.startswith("ERROR") for x in log)
+
+
+def test_post_yaml_roto_no_frena_los_demas(tmp_path):
+    _post(tmp_path, "a")
+    roto = tmp_path / "cola" / "roto"
+    roto.mkdir()
+    (roto / "post.yaml").write_text("tipo: imagen\n", encoding="utf-8")
+    log = correr(tmp_path, AHORA, None, BASE)
+    assert any("publicaría a" in x for x in log)
+    assert any(x.startswith("ERROR roto") for x in log)
+
+
+def test_ci_modo_prueba_con_algo_pendiente_avisa(tmp_path, monkeypatch):
+    from galno_ig import ci
+
+    _post(tmp_path, "a")
+    for v in ("IG_USER_ID", "IG_TOKEN"):
+        monkeypatch.delenv(v, raising=False)
+    monkeypatch.setenv("BASE_URL", BASE)
+    monkeypatch.setenv("FALLAR_SIN_CREDENCIALES", "1")
+    assert ci.main(raiz=tmp_path, subir=False, ahora=AHORA) == 1
+
+
+def test_ci_vencido_sale_1(tmp_path, monkeypatch):
+    from galno_ig import ci
+
+    _post(tmp_path, "viejo", 30)
+    monkeypatch.setenv("IG_USER_ID", "IG")
+    monkeypatch.setenv("IG_TOKEN", "T")
+    monkeypatch.setenv("BASE_URL", BASE)
+    assert ci.main(raiz=tmp_path, subir=False, ahora=AHORA, verificar_url=lambda u, t: True) == 1

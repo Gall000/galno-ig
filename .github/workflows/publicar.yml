@@ -2,11 +2,12 @@ name: publicar
 
 on:
   schedule:
-    # Horas de Argentina (UTC-3): 8:30, 11:00, 12:30 y 20:00. GitHub puede atrasarse hasta ~30 min.
-    - cron: "30 11 * * *"
-    - cron: "0 14 * * *"
-    - cron: "30 15 * * *"
-    - cron: "0 23 * * *"
+    # Horas de Argentina (UTC-3): 8:30, 11:00, 12:30 y 20:00, corridas unos minutos (los :00 y :30
+    # son los que GitHub más atrasa o saltea). Puede atrasarse hasta ~30 min.
+    - cron: "37 11 * * *"
+    - cron: "7 14 * * *"
+    - cron: "37 15 * * *"
+    - cron: "7 23 * * *"
   workflow_dispatch:
 
 permissions:
@@ -19,6 +20,7 @@ concurrency:
 jobs:
   publicar:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -34,4 +36,5 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
           BASE_URL: ${{ vars.BASE_URL }}
+          FALLAR_SIN_CREDENCIALES: ${{ vars.FALLAR_SIN_CREDENCIALES }}
         run: python -m galno_ig.ci
