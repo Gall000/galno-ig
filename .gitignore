@@ -1,0 +1,7 @@
+docs/
+.superpowers/
+__pycache__/
+.venv/
+salida/
+*.pyc
+.pytest_cache/

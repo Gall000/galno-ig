@@ -1,0 +1,8 @@
+pyyaml
+jinja2
+playwright
+imageio-ffmpeg
+requests
+pillow
+pytest
+responses
