@@ -44,6 +44,7 @@ def render_reel(
         with pagina(ANCHO, ALTO) as page:
             page.goto(tmp.as_uri())
             page.wait_for_load_state("load")
+            page.evaluate("document.fonts.ready.then(() => true)")
             proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
             try:
                 for i in range(cuadros):

@@ -3,39 +3,33 @@
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="tema.css">
+<link rel="stylesheet" href="reel.css">
 <style>
-  /* Reel 9:16 «antes / después». Datos: titulo, negocio, antes (mensajes de chat), despues_titulo,
-     turnos [{hora, estado: libre|tomado}], elegido (índice), subtitulos, ejemplo, cierre_titulo, cierre_bajada. */
-  html, body { width: 1080px; height: 1920px; }
-  .reel { position: relative; width: 1080px; height: 1920px; background: var(--fondo-alt); overflow: hidden; }
-  .gancho { position: absolute; left: 80px; right: 80px; top: 150px; font-size: 84px; line-height: 1.06; font-weight: 700; letter-spacing: -.02em; }
-  .aviso-ejemplo { top: 80px; right: 80px; }
-  .rotulo { position: absolute; left: 190px; top: 500px; font-size: 30px; letter-spacing: .1em; text-transform: uppercase; color: var(--secundario); }
-  .tel { position: absolute; left: 190px; width: 700px; top: 560px; height: 1000px; background: var(--fondo); border: 3px solid var(--texto); padding: 44px; overflow: hidden; }
-  .tel .bar { display: flex; justify-content: space-between; font-size: 32px; padding-bottom: 22px; border-bottom: 2px solid var(--borde); }
+  /* Antes / después. Datos: titulo, acento, negocio, antes [{texto, yo}], despues_titulo,
+     turnos [{hora, estado: libre|tomado}], elegido, confirmacion, subtitulos, ejemplo, fondo, cierre_titulo, cierre_bajada. */
+  .rotulo { position: absolute; left: 170px; top: 540px; font-size: 28px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--gris); }
+  .oscuro .rotulo { color: rgba(255,255,255,.7); }
   .fase { position: absolute; left: 44px; right: 44px; top: 120px; bottom: 44px; }
-  .msg { max-width: 78%; font-size: 32px; line-height: 1.3; padding: 18px 22px; margin: 18px 0; border: 2px solid var(--borde); opacity: 0; }
-  .msg.yo { margin-left: auto; background: var(--fondo-alt); }
+  .msg { max-width: 80%; font-size: 32px; line-height: 1.3; padding: 18px 24px; margin: 18px 0; border: 2px solid var(--borde); border-radius: 12px; opacity: 0; }
+  .msg.yo { margin-left: auto; background: var(--niebla); border-color: var(--niebla); }
+  .despues-tit { font-size: 30px; font-weight: 500; color: var(--gris); margin-bottom: 10px; }
   .turno { display: flex; justify-content: space-between; font-size: 36px; padding: 26px 0; border-bottom: 2px solid var(--borde); opacity: 0; }
-  .turno .est { font-size: 28px; color: var(--suave); }
+  .turno .est { font-size: 28px; color: var(--gris); }
   .turno.tomado .est { text-decoration: line-through; }
-  .turno.yo { background: var(--texto); color: var(--fondo); padding-left: 18px; padding-right: 18px; }
-  .turno.yo .est { color: var(--fondo); text-decoration: none; }
-  .ok { position: absolute; left: 0; right: 0; bottom: 0; background: var(--texto); color: var(--fondo); text-align: center; font-size: 34px; padding: 30px; opacity: 0; }
-  .sub { position: absolute; left: 80px; right: 80px; bottom: 210px; text-align: center; font-size: 46px; font-weight: 700; line-height: 1.25; }
-  .sub span { background: var(--fondo); padding: 6px 14px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-  .cierre { position: absolute; inset: 0; background: var(--oscuro-fondo); color: var(--oscuro-texto); display: flex; flex-direction: column; justify-content: center; padding: 0 100px; opacity: 0; }
-  .cierre h2 { font-size: 88px; line-height: 1.05; letter-spacing: -.02em; }
-  .cierre p { font-size: 44px; color: var(--oscuro-secundario); margin-top: 40px; }
-  .cierre .marca { margin-top: 140px; }
-  .cierre .marca svg { fill: var(--oscuro-texto); height: 48px; }
-  .cierre .marca span { color: var(--oscuro-secundario); font-size: 36px; }
+  .turno.yo { background: var(--tinta); color: var(--blanco); padding-left: 20px; padding-right: 20px; border-radius: 12px; }
+  .turno.yo .est { color: var(--blanco); text-decoration: none; }
+  .fase .boton { position: absolute; left: 0; right: 0; bottom: 0; opacity: 0; }
 </style>
 </head>
 <body>
-<div class="reel">
+{% set modo = 'oscuro' if fondo == 'oscuro' else 'claro' %}
+<div class="reel {{ modo }}">
+  <div class="arriba">
+    <span class="etiqueta">{{ etiqueta }}</span>
+    <span id="simbolo">{{ logo("simbolo", modo, "simbolo") }}</span>
+  </div>
   {% if ejemplo %}<div class="aviso-ejemplo">Negocio de ejemplo</div>{% endif %}
-  <div class="gancho">{{ titulo }}</div>
+  <div class="gancho">{{ titulo | acento(acento) }}</div>
   <div class="rotulo" id="rotulo">Antes</div>
   <div class="tel">
     <div class="bar"><b>{{ negocio }}</b><span id="barra">WhatsApp</span></div>
@@ -43,21 +37,19 @@
       {% for m in antes %}<div class="msg {{ 'yo' if m.yo else '' }}">{{ m.texto }}</div>{% endfor %}
     </div>
     <div class="fase" id="despues" style="opacity:0">
-      <div style="font-size:30px;color:var(--secundario);margin-bottom:10px">{{ despues_titulo }}</div>
+      <div class="despues-tit">{{ despues_titulo }}</div>
       {% for t in turnos %}<div class="turno {{ 'tomado' if t.estado == 'tomado' else '' }}" data-i="{{ loop.index0 }}"><span>{{ t.hora }}</span><span class="est">{{ 'Ocupado' if t.estado == 'tomado' else 'Libre' }}</span></div>{% endfor %}
-      <div class="ok" id="ok">{{ confirmacion or "Turno confirmado" }}</div>
+      <div class="boton" id="ok">{{ confirmacion or "Turno confirmado" }}</div>
     </div>
   </div>
   <div class="sub" id="sub"></div>
   <div class="cierre" id="cierre">
     <h2>{{ cierre_titulo or "Tu negocio, con esto andando." }}</h2>
     <p>{{ cierre_bajada or "Escribime por DM." }}</p>
-    <div class="marca">
-      <svg viewBox="0 0 124 24" aria-label="GALNO"><path d="M0 0H24V5H5V19H19V16H12V11H24V24H0Z"/><path fill-rule="evenodd" d="M29 0H49V24H44V15H34V24H29ZM34 5V10H44V5Z"/><path d="M54 0H59V19H72V24H54Z"/><path d="M77 0H82.5L92 15.5V0H97V24H91.5L82 8.5V24H77Z"/><path fill-rule="evenodd" d="M102 0H124V24H102ZM107 5V19H119V5Z"/></svg>
-      <span>Assist</span>
-    </div>
+    <span id="firma">{{ logo("assist", "oscuro", "assist") }}</span>
   </div>
 </div>
+{% include "_reel_trazo.html" %}
 <script>
   const D = {{ duracion_ms | int }};
   const SUBS = {{ subtitulos | default([]) | tojson }};
@@ -82,6 +74,8 @@
     turnos.forEach((el, i) => el.classList.toggle('yo', i === ELEGIDO && t >= tElige));
     document.getElementById('ok').style.opacity = ease((t - tElige - 700) / 300);
     document.getElementById('cierre').style.opacity = ease((t - fin) / 400);
+    dibujarLogo(document.querySelector('#simbolo svg'), t, 0, 900);
+    dibujarLogo(document.querySelector('#firma svg'), t, fin + 300, 1100);
     const s = SUBS.find((x) => t >= x.desde_ms && t < x.hasta_ms);
     document.getElementById('sub').innerHTML = s ? `<span>${s.texto}</span>` : '';
   };

@@ -1,8 +1,10 @@
 {% extends "_base.html" %}
-{# Campos: etiqueta, titulo, bajada, fondo (claro|oscuro), ejemplo #}
+{% from "_dibujos.html" import dibujo as dibujar %}
+{# Campos: etiqueta, titulo, acento (palabra del título en lacre), bajada, dibujo, remate, fondo (claro|oscuro), ejemplo #}
 {% block contenido %}
-  {% if etiqueta %}<div class="etiqueta">{{ etiqueta }}</div>{% endif %}
-  <h1 class="titulo" style="margin-top: 140px">{{ titulo }}</h1>
+  <div style="margin-top:auto"></div>
+  {% if dibujo %}<div style="align-self:flex-end;margin-bottom:64px">{{ dibujar(dibujo, 220) }}</div>{% endif %}
+  <h1 class="titulo">{{ titulo | acento(acento) }}</h1>
   {% if bajada %}<p class="bajada">{{ bajada }}</p>{% endif %}
 {% endblock %}
-{% block pie %}Escribime por DM{% endblock %}
+{% block pie %}<span>{{ remate or "Escribime por DM" }}</span><span class="flecha {{ '' if acento else 'lacre' }}">→</span>{% endblock %}

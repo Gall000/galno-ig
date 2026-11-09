@@ -1,0 +1,12 @@
+<script>
+  // Firma animada (§12): los trazos del logo se dibujan en `dur` ms desde `t0`; el punto y «Assist» aparecen al final.
+  function dibujarLogo(svg, t, t0, dur) {
+    const k = Math.max(0, Math.min(1, (t - t0) / dur));
+    svg.querySelectorAll('path.trazo').forEach((p) => {
+      const L = p.__L || (p.__L = p.getTotalLength());
+      p.style.strokeDasharray = L;
+      p.style.strokeDashoffset = L * (1 - k);
+    });
+    svg.querySelectorAll('circle, g').forEach((el) => { el.style.opacity = k >= 1 ? 1 : 0; });
+  }
+</script>

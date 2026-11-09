@@ -25,7 +25,7 @@ def fh(dia: int, hora: int, minuto: int = 0) -> datetime:
 
 
 def cierre(titulo: str, bajada: str = "Si te sirvió, guardalo o mandáselo a alguien que tenga un local.") -> dict:
-    return {"etiqueta": "Para guardar", "titulo": titulo, "cuerpo": bajada + " " + CTA + ".", "fondo": "oscuro"}
+    return {"etiqueta": "Para guardar", "titulo": titulo, "cuerpo": bajada, "fondo": "oscuro", "lockup": True, "remate": CTA + " →"}
 
 
 CARRUSELES = {
@@ -38,7 +38,7 @@ CARRUSELES = {
             f"¿Te pasa alguna? {CTA} y te digo cómo lo resolvería en tu caso."
         ),
         slides=[
-            {"etiqueta": "Consejo", "titulo": "3 señales de que perdés pedidos por WhatsApp"},
+            {"etiqueta": "Carrusel · Consejo", "titulo": "3 señales de que perdés pedidos por WhatsApp", "acento": "perdés pedidos", "dibujo": "servilleta"},
             {"etiqueta": "Señal 1", "titulo": "Respondés lo mismo diez veces por día",
              "cuerpo": "Precio, horario, si hay stock. Cada pregunta repetida es un cliente esperando una respuesta que podría leer solo."},
             {"etiqueta": "Señal 2", "titulo": "Los pedidos llegan en audios",
@@ -61,7 +61,7 @@ CARRUSELES = {
             f"{CTA} si querés que mire la tuya."
         ),
         slides=[
-            {"etiqueta": "Gastronomía", "titulo": "5 errores de la carta digital de tu local"},
+            {"etiqueta": "Carrusel · Gastronomía", "titulo": "5 errores de la carta digital de tu local", "acento": "5 errores", "dibujo": "taza"},
             {"etiqueta": "Error 1", "titulo": "Es una foto o un PDF",
              "cuerpo": "En el celular hay que hacer zoom para leer. Nadie hace zoom con hambre."},
             {"etiqueta": "Error 2", "titulo": "Precios viejos",
@@ -85,7 +85,7 @@ CARRUSELES = {
             f"{CTA} y te muestro cómo quedaría con tus horarios."
         ),
         slides=[
-            {"etiqueta": "Servicio de la semana", "titulo": "Turnos online"},
+            {"etiqueta": "Servicio de la semana", "titulo": "Turnos online. Tu agenda, sin cuaderno.", "acento": "sin cuaderno", "dibujo": "reloj"},
             {"etiqueta": "Qué es", "titulo": "Una página con tus horarios libres",
              "cuerpo": "El cliente elige el servicio, el día y la hora. El turno queda anotado y a vos te llega el aviso."},
             {"etiqueta": "Para quién", "titulo": "Si trabajás con agenda",
@@ -107,7 +107,7 @@ CARRUSELES = {
             f"Si la tuya no las contesta, {CTA.lower()} y la revisamos."
         ),
         slides=[
-            {"etiqueta": "Consejo", "titulo": "4 cosas que tu bio tiene que decir"},
+            {"etiqueta": "Carrusel · Consejo", "titulo": "4 cosas que tu bio tiene que decir", "acento": "4 cosas", "dibujo": "cartel"},
             {"etiqueta": "1", "titulo": "Qué hacés", "cuerpo": "En palabras de cliente: «Pizzas a la piedra con envío», no «Pasión por la gastronomía»."},
             {"etiqueta": "2", "titulo": "Dónde estás", "cuerpo": "Barrio o zona de envío. El que es de otra zona se ahorra preguntar."},
             {"etiqueta": "3", "titulo": "Cuándo atendés", "cuerpo": "Días y horario. Si cambia seguido, que el link lo muestre actualizado."},
@@ -126,7 +126,7 @@ PLACAS = {
             "Cada vez más clientes prefieren no llamar ni preguntar: quieren ver el precio, elegir y pedir.\n\n"
             f"Si tu negocio todavía depende de que te escriban para saber qué hay, {CTA.lower()}."
         ),
-        datos={"etiqueta": "Idea", "titulo": "Tu cliente no quiere llamarte.", "bajada": "Quiere ver el precio y pedir.", "fondo": "oscuro"},
+        datos={"etiqueta": "Idea", "titulo": "Tu cliente no quiere llamarte.", "acento": "llamarte", "bajada": "Quiere ver el precio y pedir.", "fondo": "oscuro"},
     ),
     "reserva-horario-destacada": dict(
         fecha_hora=fh(23, 11), reserva=True,
@@ -135,7 +135,7 @@ PLACAS = {
             "Las historias destacadas no las abre casi nadie. Horario, precios y cómo pedir tienen que estar a un toque, "
             f"en la bio o en un link.\n\n{CTA} si querés ordenarlo."
         ),
-        datos={"etiqueta": "Idea", "titulo": "Si tu horario está en una historia destacada,", "bajada": "para muchos clientes no existe.", "fondo": "claro"},
+        datos={"etiqueta": "Idea", "titulo": "Si tu horario está en una historia destacada,", "bajada": "para muchos clientes no existe.", "dibujo": "reloj", "fondo": "claro"},
     ),
 }
 
@@ -151,7 +151,7 @@ REELS = {
         ),
         plantilla="reel-demo", duracion_s=26,
         datos={
-            "titulo": "¿Seguís tomando pedidos por audio?",
+            "etiqueta": "Reel · Demo", "titulo": "¿Seguís tomando pedidos por audio?", "acento": "por audio", "fondo": "claro",
             "negocio": "Pizzería Ejemplo",
             "items": [{"nombre": "Muzzarella", "precio": "$ 9.500"}, {"nombre": "Napolitana", "precio": "$ 11.000"},
                       {"nombre": "Fugazzeta", "precio": "$ 10.800"}, {"nombre": "Empanadas x6", "precio": "$ 8.400"}],
@@ -182,7 +182,7 @@ REELS = {
         ),
         plantilla="reel-antes-despues", duracion_s=26,
         datos={
-            "titulo": "Diez mensajes para sacar un turno",
+            "etiqueta": "Reel · Antes y después", "titulo": "Diez mensajes para sacar un turno", "acento": "Diez mensajes", "fondo": "oscuro",
             "negocio": "Barbería Ejemplo",
             "antes": [
                 {"texto": "Hola! Tenés lugar el sábado?", "yo": False},
@@ -224,7 +224,7 @@ REELS = {
         ),
         plantilla="reel-demo", duracion_s=28,
         datos={
-            "titulo": "Lo que le faltaba a mi emprendimiento",
+            "etiqueta": "Reel · Caso", "titulo": "Lo que le faltaba a mi emprendimiento", "acento": "le faltaba", "fondo": "oscuro",
             "negocio": "DesdeChile.Ar",
             # CONFIRMAR con Lucas: productos y precios reales de DesdeChile.Ar.
             "items": [{"nombre": "Camiseta (talle M)", "precio": "$ —"}, {"nombre": "Camiseta (talle L)", "precio": "$ —"},

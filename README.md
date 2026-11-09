@@ -2,7 +2,7 @@
 
 Contenido y publicación del Instagram de Galno Assist.
 
-- `plantillas/`: plantillas HTML. **La marca vive sólo en `plantillas/tema.css`** (hoy provisoria).
+- `plantillas/`: plantillas HTML con la marca Galno 2.0 (guía canónica en el vault, §15). Colores y tipografía en `tema.css` y `reel.css`; logos oficiales en `marca/`; dibujos en `_dibujos.html`. Campos útiles: `fondo` (claro|oscuro, alternar en la grilla), `acento` (palabra del título en lacre, una por pieza), `dibujo` (tijera, taza, pizza, llave, pan, servilleta, reloj, cartel).
 - `cola/<id>/`: una carpeta por publicación con `post.yaml`, archivos (`.jpg` / `.mp4`) y, en reels, `reel.yaml` + `guion.md`.
 - `galno_ig/`: render, cola, vista semanal, publicador.
 - `.github/workflows/publicar.yml`: publica sola lo **aprobado**, 4 veces por día, con la API oficial de Meta.

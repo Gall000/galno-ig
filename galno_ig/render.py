@@ -4,7 +4,10 @@ from __future__ import annotations
 from contextlib import contextmanager
 from pathlib import Path
 
+import re
+
 from jinja2 import Environment, FileSystemLoader, Undefined, select_autoescape
+from markupsafe import Markup, escape
 from playwright.sync_api import sync_playwright
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -16,6 +19,31 @@ _env = Environment(
     autoescape=select_autoescape(["html"]),
     undefined=Undefined,  # campos faltantes = vacío, no error
 )
+
+_TINTA, _BLANCO = "#141414", "#FFFFFF"
+
+
+def logo(pieza: str, modo: str = "claro", clase: str = "") -> Markup:
+    """SVG oficial de Marca/ (simbolo | wordmark | assist), inline y sin tocar los trazos.
+    Sólo se cambia el <style> por atributos, para poder mezclar claro y oscuro en una misma página."""
+    svg = (PLANTILLAS / "marca" / f"galno-{pieza}-{modo}.svg").read_text(encoding="utf-8")
+    color = _BLANCO if modo == "oscuro" else _TINTA
+    svg = re.sub(r"<style>.*?</style>", "", svg)
+    svg = svg.replace('class="s"', f'class="trazo" stroke="{color}"').replace('class="f"', f'fill="{color}"')
+    return Markup(svg.replace("<svg ", f'<svg class="logo {clase}" aria-label="Galno" role="img" ', 1))
+
+
+def acento(texto, palabra=None) -> Markup:
+    """Escapa el texto y pinta en lacre la primera aparición de `palabra` (regla: un acento por pieza)."""
+    seguro = str(escape(texto or ""))
+    if palabra:
+        p = str(escape(palabra))
+        seguro = seguro.replace(p, f'<span class="lacre">{p}</span>', 1)
+    return Markup(seguro)
+
+
+_env.globals["logo"] = logo
+_env.filters["acento"] = acento
 
 
 def html_de(plantilla: str, datos: dict) -> str:
@@ -43,6 +71,7 @@ def _capturar(page, plantilla: str, datos: dict, salida: Path) -> Path:
     try:
         page.goto(tmp.as_uri())
         page.wait_for_load_state("load")
+        page.evaluate("document.fonts.ready.then(() => true)")
         page.screenshot(path=str(salida), type="jpeg", quality=90, full_page=False)
     finally:
         tmp.unlink(missing_ok=True)

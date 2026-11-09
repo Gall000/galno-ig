@@ -6,15 +6,16 @@
 {% block estilo %}{% endblock %}
 </head>
 <body>
-<div class="lienzo {{ 'oscuro' if fondo == 'oscuro' else '' }}">
+{% set modo = 'oscuro' if fondo == 'oscuro' else 'claro' %}
+<div class="lienzo {{ modo }}">
+  <div class="arriba">
+    <span class="etiqueta">{{ etiqueta }}</span>
+    {{ logo("simbolo", modo, "simbolo") }}
+  </div>
   {% if ejemplo %}<div class="aviso-ejemplo">Negocio de ejemplo</div>{% endif %}
   {% block contenido %}{% endblock %}
   <div class="pie">
-    <div class="marca">
-      <svg viewBox="0 0 124 24" aria-label="GALNO"><path d="M0 0H24V5H5V19H19V16H12V11H24V24H0Z"/><path fill-rule="evenodd" d="M29 0H49V24H44V15H34V24H29ZM34 5V10H44V5Z"/><path d="M54 0H59V19H72V24H54Z"/><path d="M77 0H82.5L92 15.5V0H97V24H91.5L82 8.5V24H77Z"/><path fill-rule="evenodd" d="M102 0H124V24H102ZM107 5V19H119V5Z"/></svg>
-      <span>Assist</span>
-    </div>
-    <div>{% block pie %}{% endblock %}</div>
+    {% block pie %}{% endblock %}
   </div>
 </div>
 </body>

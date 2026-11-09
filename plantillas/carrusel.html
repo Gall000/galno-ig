@@ -1,9 +1,28 @@
 {% extends "_base.html" %}
-{# Campos: etiqueta, titulo, cuerpo (texto) o items (lista), n, total, fondo, ejemplo #}
+{% from "_dibujos.html" import dibujo as dibujar, flecha_dibujada %}
+{# Campos: etiqueta, titulo, acento, cuerpo (texto) o items (lista), dibujo, lockup (cierre de presentación),
+   n, total, fondo, ejemplo #}
+{% set tapa = not cuerpo and not items and not lockup %}
 {% block contenido %}
-  {% if etiqueta %}<div class="etiqueta">{{ etiqueta }}</div>{% endif %}
-  {% if titulo %}<h1 class="titulo" {% if not cuerpo and not items %}style="font-size:108px;margin-top:140px"{% else %}style="font-size:76px"{% endif %}>{{ titulo }}</h1>{% endif %}
-  {% if cuerpo %}<div class="cuerpo">{{ cuerpo }}</div>{% endif %}
-  {% if items %}<div class="cuerpo"><ul>{% for it in items %}<li><b>{{ loop.index }}</b><span>{{ it }}</span></li>{% endfor %}</ul></div>{% endif %}
+  {% if tapa %}
+    <div style="margin-top:auto"></div>
+    {% if dibujo %}<div style="align-self:flex-end;margin-bottom:64px">{{ dibujar(dibujo, 220) }}</div>{% endif %}
+    <h1 class="titulo">{{ titulo | acento(acento) }}</h1>
+    <div style="margin-top:48px">{{ flecha_dibujada(240) }}</div>
+  {% else %}
+    <div style="margin:auto 0">
+    {% if dibujo %}<div style="margin-bottom:48px">{{ dibujar(dibujo, 150) }}</div>{% endif %}
+    <h1 class="titulo chico">{{ titulo | acento(acento) }}</h1>
+    {% if cuerpo %}<div class="cuerpo">{{ cuerpo }}</div>{% endif %}
+    {% if items %}<div class="cuerpo"><ul>{% for it in items %}<li><b>{{ loop.index }}</b><span>{{ it }}</span></li>{% endfor %}</ul></div>{% endif %}
+    </div>
+  {% endif %}
 {% endblock %}
-{% block pie %}{% if n and total %}{{ n }} / {{ total }}{% if n < total %} →{% endif %}{% endif %}{% endblock %}
+{% block pie %}
+  {% if lockup %}
+    {{ logo("assist", 'oscuro' if fondo == 'oscuro' else 'claro', "assist") }}<span>{{ remate or "Escribime por DM" }}</span>
+  {% else %}
+    <span>{% if n and total %}{{ n }} / {{ total }}{% endif %}</span>
+    {% if n and total and n < total and not tapa %}<span class="flecha {{ '' if acento else 'lacre' }}">→</span>{% endif %}
+  {% endif %}
+{% endblock %}

@@ -1,49 +1,56 @@
-/* Tema PROVISORIO. La marca nueva de Galno se aplica cambiando solo este archivo. */
+/* Galno 2.0 — guía canónica: 2cerebro/01 - Proyectos/Galno/Galno Brand Guidelines.md (§7 color, §8 tipo, §15 Instagram).
+   La identidad se dibuja (logo y dibujos); la información se escribe (Schibsted Grotesk). */
+@font-face {
+  font-family: "Schibsted Grotesk";
+  src: url("fuentes/SchibstedGrotesk.ttf") format("truetype");
+  font-weight: 400 900;
+}
 :root {
-  --fondo: #FFFFFF;
-  --texto: #000000;
-  --secundario: #4D4D4D;
-  --suave: #808080;
-  --borde: #E5E5E5;
-  --fondo-alt: #F5F5F5;
-  --oscuro-fondo: #0A0A0A;
-  --oscuro-texto: #FFFFFF;
-  --oscuro-secundario: #999999;
-  --acento: #000000;
-  --fuente: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  --radio: 0px;
-  --margen: 88px;
+  --tinta: #141414;
+  --blanco: #FFFFFF;
+  --niebla: #F3F2EF;
+  --borde: #E4E2DD;
+  --gris: #6E6C68;
+  --lacre: #C2361F;
+  --fuente: "Schibsted Grotesk", "Segoe UI", Arial, sans-serif;
+  --margen: 76px; /* 7 % de 1080 */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { width: 1080px; height: 1350px; overflow: hidden; }
-body {
-  font-family: var(--fuente);
-  background: var(--fondo);
-  color: var(--texto);
-  -webkit-font-smoothing: antialiased;
-}
-.lienzo { position: relative; width: 100%; height: 100%; padding: var(--margen); display: flex; flex-direction: column; }
-.oscuro { background: var(--oscuro-fondo); color: var(--oscuro-texto); }
-.oscuro .etiqueta, .oscuro .bajada, .oscuro .marca span, .oscuro .pie { color: var(--oscuro-secundario); }
-.oscuro .marca svg { fill: var(--oscuro-texto); }
+body { font-family: var(--fuente); background: var(--blanco); color: var(--tinta); -webkit-font-smoothing: antialiased; }
 
-.etiqueta { font-size: 26px; letter-spacing: .08em; text-transform: uppercase; color: var(--secundario); padding-bottom: 22px; border-bottom: 2px solid currentColor; }
-.titulo { font-size: 96px; line-height: 1.04; font-weight: 700; letter-spacing: -.025em; margin-top: 64px; }
-.titulo em { font-style: normal; color: var(--suave); }
-.bajada { font-size: 38px; line-height: 1.35; color: var(--secundario); margin-top: 40px; max-width: 860px; }
-.cuerpo { font-size: 42px; line-height: 1.4; margin-top: 48px; color: var(--texto); }
+.lienzo { position: relative; width: 100%; height: 100%; padding: var(--margen); display: flex; flex-direction: column; background: var(--blanco); color: var(--tinta); }
+.oscuro { background: var(--tinta); color: var(--blanco); }
+
+/* Arriba: etiqueta a la izquierda, símbolo a la derecha (§15.3) */
+.arriba { display: flex; justify-content: space-between; align-items: center; min-height: 64px; }
+.etiqueta { font-size: 24px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--gris); }
+.oscuro .etiqueta { color: rgba(255, 255, 255, .7); }
+.logo.simbolo { width: 64px; height: 64px; }
+.aviso-ejemplo { align-self: flex-start; margin-top: 28px; font-size: 22px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
+  border: 2px solid currentColor; border-radius: 999px; padding: 8px 20px; }
+
+.titulo { font-weight: 800; letter-spacing: -.03em; line-height: 1.02; font-size: 100px; }
+.titulo.chico { font-size: 72px; letter-spacing: -.02em; line-height: 1.05; }
+.lacre { color: var(--lacre); }
+.bajada { font-size: 40px; line-height: 1.35; color: var(--gris); margin-top: 32px; max-width: 880px; }
+.oscuro .bajada { color: rgba(255, 255, 255, .72); }
+.cuerpo { font-size: 44px; line-height: 1.45; margin-top: 48px; max-width: 900px; }
+.oscuro .cuerpo { color: rgba(255, 255, 255, .85); }
 .cuerpo ul { list-style: none; }
-.cuerpo li { padding: 22px 0; border-bottom: 2px solid var(--borde); display: flex; gap: 28px; }
-.cuerpo li b { min-width: 56px; }
+.cuerpo li { padding: 24px 0; border-bottom: 2px solid var(--borde); display: flex; gap: 32px; align-items: baseline; }
+.cuerpo li:first-child { border-top: 2px solid var(--borde); }
+.cuerpo li b { min-width: 40px; font-weight: 800; color: var(--gris); }
+.oscuro .cuerpo li { border-color: rgba(255, 255, 255, .18); }
 
-.pie { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; padding-top: 32px; border-top: 2px solid var(--borde); font-size: 26px; color: var(--suave); }
-.oscuro .pie { border-top-color: #333; }
-.marca { display: flex; flex-direction: column; gap: 10px; }
-.marca svg { height: 34px; width: auto; fill: var(--texto); }
-.marca span { font-size: 28px; color: var(--secundario); }
-.aviso-ejemplo { position: absolute; top: 36px; right: var(--margen); font-size: 22px; letter-spacing: .06em; text-transform: uppercase; color: var(--suave); }
-.oscuro .aviso-ejemplo { color: var(--oscuro-secundario); }
-.oscuro .cuerpo, .oscuro .titulo { color: var(--oscuro-texto); }
-.oscuro .cuerpo { color: var(--oscuro-secundario); }
-.oscuro .cuerpo li { border-bottom-color: #333; }
+/* Dibujos: mismo marcador que el logo, sin relleno, nunca en lacre (§9) */
+.dibujo { fill: none; stroke: currentColor; stroke-width: 7.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Pie: remate a la izquierda y flecha a la derecha, o el lockup en piezas de presentación */
+.pie { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; padding-top: 40px; font-size: 30px; font-weight: 500; color: var(--gris); }
+.oscuro .pie { color: rgba(255, 255, 255, .72); }
+.flecha { font-size: 52px; line-height: 1; font-weight: 800; color: var(--tinta); }
+.oscuro .flecha { color: var(--blanco); }
+.flecha.lacre, .oscuro .flecha.lacre { color: var(--lacre); }
+.logo.assist { height: 110px; width: auto; }

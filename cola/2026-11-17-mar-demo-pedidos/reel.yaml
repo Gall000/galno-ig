@@ -1,7 +1,10 @@
 plantilla: reel-demo
 duracion_s: 26
 datos:
+  etiqueta: Reel · Demo
   titulo: ¿Seguís tomando pedidos por audio?
+  acento: por audio
+  fondo: claro
   negocio: Pizzería Ejemplo
   items:
   - nombre: Muzzarella

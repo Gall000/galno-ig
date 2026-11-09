@@ -3,48 +3,38 @@
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="tema.css">
+<link rel="stylesheet" href="reel.css">
 <style>
-  /* Reel 9:16. Todo se dibuja a partir de t (ms) en window.__setTime: sin relojes reales. */
-  html, body { width: 1080px; height: 1920px; }
-  .reel { position: relative; width: 1080px; height: 1920px; background: var(--fondo-alt); overflow: hidden; }
-  .gancho { position: absolute; left: 80px; right: 80px; top: 150px; font-size: 84px; line-height: 1.06; font-weight: 700; letter-spacing: -.02em; color: var(--texto); }
-  .aviso-ejemplo { top: 80px; right: 80px; }
-  .tel { position: absolute; left: 190px; width: 700px; top: 560px; height: 1000px; background: var(--fondo); border: 3px solid var(--texto); border-radius: var(--radio); padding: 44px; }
-  .tel .bar { display: flex; justify-content: space-between; font-size: 32px; padding-bottom: 22px; border-bottom: 2px solid var(--borde); }
-  .tel .bar b { font-weight: 700; }
+  /* Demo: carta o catálogo → pedido por WhatsApp. Todo depende de t (ms) en window.__setTime. */
   .item { display: flex; justify-content: space-between; align-items: center; font-size: 36px; padding: 30px 0; border-bottom: 2px solid var(--borde); opacity: 0; }
-  .item .mas { display: inline-block; width: 52px; height: 52px; line-height: 48px; text-align: center; border: 2px solid var(--texto); margin-left: 24px; font-size: 34px; }
-  .item.en .mas { background: var(--texto); color: var(--fondo); }
-  .btn { position: absolute; left: 44px; right: 44px; bottom: 44px; background: var(--texto); color: var(--fondo); text-align: center; font-size: 34px; padding: 30px; opacity: 0; }
-  .sub { position: absolute; left: 80px; right: 80px; bottom: 210px; text-align: center; font-size: 46px; font-weight: 700; line-height: 1.25; color: var(--texto); }
-  .sub span { background: var(--fondo); padding: 6px 14px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-  .cierre { position: absolute; inset: 0; background: var(--oscuro-fondo); color: var(--oscuro-texto); display: flex; flex-direction: column; justify-content: center; padding: 0 100px; opacity: 0; }
-  .cierre h2 { font-size: 88px; line-height: 1.05; letter-spacing: -.02em; }
-  .cierre p { font-size: 44px; color: var(--oscuro-secundario); margin-top: 40px; }
-  .cierre .marca { margin-top: 140px; }
-  .cierre .marca svg { fill: var(--oscuro-texto); height: 48px; }
-  .cierre .marca span { color: var(--oscuro-secundario); font-size: 36px; }
+  .item .precio { color: var(--gris); }
+  .item .mas { display: inline-block; width: 56px; height: 56px; line-height: 50px; text-align: center; border: 2px solid var(--tinta); border-radius: 12px; margin-left: 24px; font-size: 34px; font-weight: 700; color: var(--tinta); }
+  .item.en .mas { background: var(--tinta); color: var(--blanco); }
+  .tel .boton { position: absolute; left: 44px; right: 44px; bottom: 44px; opacity: 0; }
 </style>
 </head>
 <body>
-<div class="reel">
+{% set modo = 'oscuro' if fondo == 'oscuro' else 'claro' %}
+<div class="reel {{ modo }}">
+  <div class="arriba">
+    <span class="etiqueta">{{ etiqueta }}</span>
+    <span id="simbolo">{{ logo("simbolo", modo, "simbolo") }}</span>
+  </div>
   {% if ejemplo %}<div class="aviso-ejemplo">Negocio de ejemplo</div>{% endif %}
-  <div class="gancho">{{ titulo }}</div>
+  <div class="gancho">{{ titulo | acento(acento) }}</div>
   <div class="tel">
     <div class="bar"><b>{{ negocio }}</b><span id="cuenta">Carta</span></div>
-    {% for it in items %}<div class="item" data-i="{{ loop.index0 }}"><span>{{ it.nombre }}</span><span>{{ it.precio }}<span class="mas">+</span></span></div>{% endfor %}
-    <div class="btn" id="btn">Pedir por WhatsApp</div>
+    {% for it in items %}<div class="item" data-i="{{ loop.index0 }}"><span>{{ it.nombre }}</span><span><span class="precio">{{ it.precio }}</span><span class="mas">+</span></span></div>{% endfor %}
+    <div class="boton" id="btn">Pedir por WhatsApp</div>
   </div>
   <div class="sub" id="sub"></div>
   <div class="cierre" id="cierre">
     <h2>{{ cierre_titulo or "Tu negocio, con esto andando." }}</h2>
     <p>{{ cierre_bajada or "Escribime por DM." }}</p>
-    <div class="marca">
-      <svg viewBox="0 0 124 24" aria-label="GALNO"><path d="M0 0H24V5H5V19H19V16H12V11H24V24H0Z"/><path fill-rule="evenodd" d="M29 0H49V24H44V15H34V24H29ZM34 5V10H44V5Z"/><path d="M54 0H59V19H72V24H54Z"/><path d="M77 0H82.5L92 15.5V0H97V24H91.5L82 8.5V24H77Z"/><path fill-rule="evenodd" d="M102 0H124V24H102ZM107 5V19H119V5Z"/></svg>
-      <span>Assist</span>
-    </div>
+    <span id="firma">{{ logo("assist", "oscuro", "assist") }}</span>
   </div>
 </div>
+{% include "_reel_trazo.html" %}
 <script>
   const DURACION = {{ duracion_ms | int }};
   const SUBS = {{ subtitulos | default([]) | tojson }};  // [{desde_ms, hasta_ms, texto}]
@@ -68,6 +58,8 @@
     const tb = 600 + items.length * paso;
     document.getElementById('btn').style.opacity = ease((t - tb) / 350);
     document.getElementById('cierre').style.opacity = ease((t - finItems) / 400);
+    dibujarLogo(document.querySelector('#simbolo svg'), t, 0, 900);
+    dibujarLogo(document.querySelector('#firma svg'), t, finItems + 300, 1100);
     const s = SUBS.find((x) => t >= x.desde_ms && t < x.hasta_ms);
     document.getElementById('sub').innerHTML = s ? `<span>${s.texto}</span>` : '';
   };

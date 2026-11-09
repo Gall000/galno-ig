@@ -1,7 +1,10 @@
 plantilla: reel-antes-despues
 duracion_s: 26
 datos:
+  etiqueta: Reel · Antes y después
   titulo: Diez mensajes para sacar un turno
+  acento: Diez mensajes
+  fondo: oscuro
   negocio: Barbería Ejemplo
   antes:
   - texto: Hola! Tenés lugar el sábado?

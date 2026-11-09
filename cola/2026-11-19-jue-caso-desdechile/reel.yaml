@@ -1,7 +1,10 @@
 plantilla: reel-demo
 duracion_s: 28
 datos:
+  etiqueta: Reel · Caso
   titulo: Lo que le faltaba a mi emprendimiento
+  acento: le faltaba
+  fondo: oscuro
   negocio: DesdeChile.Ar
   items:
   - nombre: Camiseta (talle M)
