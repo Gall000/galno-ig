@@ -241,7 +241,7 @@ REELS = {
         guion=(
             "[0-5 s] Te muestro lo que le faltaba a mi propio emprendimiento. Se llamaba DesdeChile.Ar: traíamos productos de Chile.\n"
             "[5-12 s] Los reels andaban bien, pero cada venta arrancaba igual: «¿qué hay disponible?», por mensaje, una y otra vez.\n"
-            "[12-19 s] Hoy lo resolvería así: un catálogo con lo que hay, con precio y talle.\n"
+            "[12-19 s] Hoy lo resolvería así: un catálogo con lo que hay y cuánto sale.\n"
             "[19-25 s] Y un botón para pedir por WhatsApp. El cliente llega sabiendo qué quiere.\n"
             "[25-28 s] Eso armo ahora para otros emprendimientos. Escribime por DM.\n\n"
             "ANTES DE APROBAR: confirmar productos y precios reales de DesdeChile.Ar (hoy son marcadores)."
