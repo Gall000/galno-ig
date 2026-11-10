@@ -1,4 +1,4 @@
-fecha_hora: '2026-11-21T11:00:00-03:00'
+fecha_hora: '2026-11-23T09:00:00-03:00'
 tipo: imagen
 archivos:
 - 01.jpg
@@ -11,7 +11,7 @@ hashtags:
 - comerciolocal
 estado: borrador
 ejemplo: false
-reserva: false
+reserva: true
 necesita_audio: false
 media_id: null
 error: null

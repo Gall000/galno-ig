@@ -1,4 +1,4 @@
-"""Primera semana: 16 al 22 de noviembre de 2026 (+ 2 reservas).
+"""Primera semana: 16 al 22 de noviembre de 2026 (+ 3 reservas). El sábado sale el reporte semanal.
 
 Correr:  .venv/Scripts/python -m semanas.s2026_11_16
 Crea/actualiza cola/<id>/ con post.yaml, imágenes y reels de vista previa (sin voz).
@@ -18,6 +18,9 @@ from galno_ig.video import render_reel
 AR = timezone(timedelta(hours=-3))
 COLA = Path(__file__).resolve().parent.parent / "cola"
 CTA = "Escribime por DM"
+WEB = "galno.com.ar"
+# Línea final de los captions que mencionan la web (Instagram no hace clickeables los links del texto).
+MAS_WEB = f"\n\nMás ejemplos y un reporte nuevo cada semana en {WEB} (link en la bio)."
 
 
 def fh(dia: int, hora: int, minuto: int = 0) -> datetime:
@@ -25,7 +28,7 @@ def fh(dia: int, hora: int, minuto: int = 0) -> datetime:
 
 
 def cierre(titulo: str, bajada: str = "Si te sirvió, guardalo o mandáselo a alguien que tenga un local.") -> dict:
-    return {"etiqueta": "Para guardar", "titulo": titulo, "cuerpo": bajada, "fondo": "oscuro", "lockup": True, "remate": CTA + " →"}
+    return {"etiqueta": "Para guardar", "titulo": titulo, "cuerpo": bajada, "fondo": "oscuro", "lockup": True, "remate": WEB + " →"}
 
 
 CARRUSELES = {
@@ -36,6 +39,7 @@ CARRUSELES = {
             "Si tu local vende por WhatsApp, estas 3 señales te dicen que se te están yendo pedidos.\n\n"
             "Ninguna se arregla trabajando más horas: se arreglan dejando a la vista lo que el cliente pregunta siempre.\n\n"
             f"¿Te pasa alguna? {CTA} y te digo cómo lo resolvería en tu caso."
+            + MAS_WEB
         ),
         slides=[
             {"etiqueta": "Carrusel · Consejo", "titulo": "3 señales de que perdés pedidos por WhatsApp", "acento": "perdés pedidos", "dibujo": "servilleta"},
@@ -59,6 +63,7 @@ CARRUSELES = {
             "La carta digital no es subir una foto del menú impreso.\n\n"
             "Estos son los 5 errores que más veo en bares, pizzerías y cafeterías. Si tu carta tiene 2 o más, el cliente se va antes de pedir.\n\n"
             f"{CTA} si querés que mire la tuya."
+            + MAS_WEB
         ),
         slides=[
             {"etiqueta": "Carrusel · Gastronomía", "titulo": "5 errores de la carta digital de tu local", "acento": "5 errores", "dibujo": "taza"},
@@ -83,6 +88,7 @@ CARRUSELES = {
             "Para barberías, peluquerías, centros de estética, talleres y consultorios: el cliente ve los horarios libres y reserva solo, "
             "sin ida y vuelta de mensajes.\n\n"
             f"{CTA} y te muestro cómo quedaría con tus horarios."
+            + MAS_WEB
         ),
         slides=[
             {"etiqueta": "Servicio de la semana", "titulo": "Turnos online. Tu agenda, sin cuaderno.", "acento": "sin cuaderno", "dibujo": "reloj"},
@@ -97,6 +103,34 @@ CARRUSELES = {
             {"etiqueta": "Lo que necesito de vos", "titulo": "Tus servicios, tus horarios y cuánto dura cada uno",
              "cuerpo": "Con eso lo armo y te lo muestro funcionando antes de que decidas nada."},
             cierre("¿Tu negocio trabaja con turnos?", "Guardalo para cuando lo pienses, o mandáselo a quien le sirva."),
+        ],
+    ),
+    "2026-11-21-sab-reporte-web-propia": dict(
+        # Reporte semanal: sale el sábado. Aprobar sólo cuando el reporte esté publicado en la web.
+        fecha_hora=fh(21, 11), nota="Aprobar cuando galno.com.ar/reportes/negocios-con-web-propia/ esté publicado.",
+        hashtags=["negocioslocales", "emprendedores", "paginaweb"],
+        texto=(
+            "Reporte de la semana Nº 1: ¿cuántos negocios chicos tienen web propia?\n\n"
+            "Buscamos números públicos. En una encuesta de EE.UU., el 40 % de los negocios chicos tiene web propia; "
+            "en Facebook está el 50 %. De Argentina no encontramos un dato oficial y preferimos decirlo antes que inventarlo.\n\n"
+            "Cada semana armamos un reporte así y lo subimos a galno.com.ar, en la sección Reportes. "
+            "Este está completo ahí, con todas las fuentes (link en la bio)."
+        ),
+        slides=[
+            {"etiqueta": "Reporte semanal · Nº 1", "titulo": "¿Cuántos negocios chicos tienen web propia?", "acento": "web propia", "dibujo": "cartel"},
+            {"etiqueta": "EE.UU. · BrightLocal 2025", "titulo": "4 de cada 10 tienen web propia",
+             "cuerpo": "Encuesta a 778 negocios chicos y medianos. Más que web tienen Facebook (50 %) e Instagram (44 %)."},
+            {"etiqueta": "Unión Europea · Eurostat 2025", "titulo": "Cuanto más chica la empresa, menos web",
+             "items": ["De 10 a 49 personas: 76,7 %", "De 50 a 249 personas: 89,7 %", "250 personas o más: 95,7 %"]},
+            {"etiqueta": "Argentina", "titulo": "No encontramos un dato oficial",
+             "cuerpo": "Lo que sí está medido: 90 de cada 100 personas usan internet (INDEC, 2024). La gente que te busca ya está conectada."},
+            {"etiqueta": "EE.UU. · BrightLocal 2026", "titulo": "Después de leer reseñas buenas, el 54 % entra a la web del negocio",
+             "cuerpo": "En 2019 era el 32 %."},
+            {"etiqueta": "Qué sacamos en limpio", "titulo": "Lo básico, en un lugar tuyo",
+             "cuerpo": "Qué hacés, a qué hora abrís y cómo te piden o reservan. Sin depender del algoritmo de nadie."},
+            {"etiqueta": "Reporte completo", "titulo": "Un reporte nuevo cada semana",
+             "cuerpo": "Este, con todas las fuentes, está en galno.com.ar, sección Reportes.", "fondo": "oscuro", "lockup": True,
+             "remate": WEB + " →"},
         ],
     ),
     "reserva-bio-instagram": dict(
@@ -119,14 +153,14 @@ CARRUSELES = {
 }
 
 PLACAS = {
-    "2026-11-21-sab-idea-llamar": dict(
-        fecha_hora=fh(21, 11),
+    "reserva-idea-llamar": dict(
+        fecha_hora=fh(23, 9), reserva=True,
         hashtags=["negocioslocales", "comerciolocal"],
         texto=(
             "Cada vez más clientes prefieren no llamar ni preguntar: quieren ver el precio, elegir y pedir.\n\n"
             f"Si tu negocio todavía depende de que te escriban para saber qué hay, {CTA.lower()}."
         ),
-        datos={"etiqueta": "Idea", "titulo": "Tu cliente no quiere llamarte.", "acento": "llamarte", "bajada": "Quiere ver el precio y pedir.", "fondo": "oscuro"},
+        datos={"etiqueta": "Idea", "titulo": "Tu cliente no quiere llamarte.", "acento": "llamarte", "bajada": "Quiere ver el precio y pedir.", "fondo": "oscuro", "remate": WEB},
     ),
     "reserva-horario-destacada": dict(
         fecha_hora=fh(23, 11), reserva=True,
@@ -148,6 +182,7 @@ REELS = {
             "Negocio de ejemplo: así pide un cliente en una pizzería sin mandar un audio.\n\n"
             "Ve la carta con precios, arma el pedido y te llega por WhatsApp completo y por escrito. Vos lo preparás, sin anotar nada.\n\n"
             f"Sirve para pizzerías, rotiserías, heladerías y cualquier local que tome pedidos. {CTA}."
+            + MAS_WEB
         ),
         plantilla="reel-demo", duracion_s=26,
         datos={
@@ -156,7 +191,7 @@ REELS = {
             "items": [{"nombre": "Muzzarella", "precio": "$ 9.500"}, {"nombre": "Napolitana", "precio": "$ 11.000"},
                       {"nombre": "Fugazzeta", "precio": "$ 10.800"}, {"nombre": "Empanadas x6", "precio": "$ 8.400"}],
             "cierre_titulo": "Pedidos claros, sin audios.",
-            "cierre_bajada": "Escribime por DM y lo armamos para tu local.",
+            "cierre_bajada": "Escribime por DM o entrá a galno.com.ar",
             "subtitulos": [
                 {"desde_ms": 0, "hasta_ms": 3500, "texto": "Así pide un cliente sin mandarte un audio"},
                 {"desde_ms": 3500, "hasta_ms": 9500, "texto": "Ve la carta con precios actualizados"},
@@ -169,7 +204,7 @@ REELS = {
             "[3-9 s] Entra al link, ve la carta con los precios de hoy.\n"
             "[9-16 s] Toca más en lo que quiere: una muzza, una napo, una docena de empanadas.\n"
             "[16-23 s] Y toca «Pedir por WhatsApp». A vos te llega el pedido completo, escrito, listo para preparar.\n"
-            "[23-26 s] Si tu local toma pedidos, escribime por DM y lo armamos con tu carta."
+            "[23-26 s] Si tu local toma pedidos, escribime por DM o entrá a galno punto com punto ar."
         ),
     ),
     "2026-11-18-mie-antes-despues-turnos": dict(
@@ -179,6 +214,7 @@ REELS = {
             "Negocio de ejemplo: una barbería antes y después de tener turnos online.\n\n"
             "Antes: diez mensajes para encontrar un horario, mientras estás cortando. Después: el cliente ve lo libre y reserva solo.\n\n"
             f"{CTA} si querés verlo con tus horarios."
+            + MAS_WEB
         ),
         plantilla="reel-antes-despues", duracion_s=26,
         datos={
@@ -198,7 +234,7 @@ REELS = {
             "elegido": 1,
             "confirmacion": "Turno confirmado · Sáb 11:00",
             "cierre_titulo": "Tu agenda se llena sola.",
-            "cierre_bajada": "Escribime por DM y la armamos con tus horarios.",
+            "cierre_bajada": "Escribime por DM o entrá a galno.com.ar",
             "subtitulos": [
                 {"desde_ms": 0, "hasta_ms": 10500, "texto": "Antes: ida y vuelta mientras estás atendiendo"},
                 {"desde_ms": 10500, "hasta_ms": 17000, "texto": "Después: el cliente ve los horarios libres"},
@@ -210,7 +246,7 @@ REELS = {
             "[3-10 s] «¿Tenés lugar el sábado?» «¿A qué hora?» «¿Tipo cuatro?» «No, tengo cinco y media»… y vos con la máquina en la mano.\n"
             "[10-17 s] Ahora, con turnos online: el cliente abre el link y ve qué horarios están libres.\n"
             "[17-23 s] Toca el de las once, y listo, queda confirmado. A vos te llega el aviso.\n"
-            "[23-26 s] Si trabajás con turnos, escribime por DM y lo armamos con tu agenda."
+            "[23-26 s] Si trabajás con turnos, escribime por DM o entrá a galno punto com punto ar."
         ),
     ),
     "2026-11-19-jue-caso-desdechile": dict(
@@ -221,6 +257,7 @@ REELS = {
             "Los reels funcionaban, pero cada venta empezaba con «¿qué hay disponible?» por mensaje. Le faltaba lo más simple: "
             "un catálogo con lo disponible y un botón para pedir.\n\n"
             f"Hoy eso es lo que armo para otros emprendimientos. {CTA}."
+            + MAS_WEB
         ),
         plantilla="reel-demo", duracion_s=28,
         datos={
@@ -230,7 +267,7 @@ REELS = {
             "items": [{"nombre": "Camiseta (talle M)", "precio": "$ —"}, {"nombre": "Camiseta (talle L)", "precio": "$ —"},
                       {"nombre": "Producto 3", "precio": "$ —"}],
             "cierre_titulo": "Un catálogo y un botón para pedir.",
-            "cierre_bajada": "Escribime por DM si vendés por Instagram.",
+            "cierre_bajada": "Escribime por DM o entrá a galno.com.ar",
             "subtitulos": [
                 {"desde_ms": 0, "hasta_ms": 5000, "texto": "Tuve un emprendimiento: DesdeChile.Ar"},
                 {"desde_ms": 5000, "hasta_ms": 12000, "texto": "Cada venta empezaba con «¿qué hay disponible?»"},
@@ -243,7 +280,7 @@ REELS = {
             "[5-12 s] Los reels andaban bien, pero cada venta arrancaba igual: «¿qué hay disponible?», por mensaje, una y otra vez.\n"
             "[12-19 s] Hoy lo resolvería así: un catálogo con lo que hay y cuánto sale.\n"
             "[19-25 s] Y un botón para pedir por WhatsApp. El cliente llega sabiendo qué quiere.\n"
-            "[25-28 s] Eso armo ahora para otros emprendimientos. Escribime por DM.\n\n"
+            "[25-28 s] Eso armo ahora para otros emprendimientos. Escribime por DM o entrá a galno punto com punto ar.\n\n"
             "ANTES DE APROBAR: confirmar productos y precios reales de DesdeChile.Ar (hoy son marcadores)."
         ),
     ),
@@ -260,6 +297,7 @@ def _preparar(id: str, tipo: str, archivos: list[str], spec: dict, necesita_audi
         id=id, carpeta=carpeta, fecha_hora=spec["fecha_hora"], tipo=tipo, archivos=archivos,
         texto=spec["texto"], hashtags=spec["hashtags"], estado="borrador",
         ejemplo=spec.get("ejemplo", False), reserva=spec.get("reserva", False), necesita_audio=necesita_audio,
+        extra={"nota": spec["nota"]} if spec.get("nota") else {},
     )
 
 

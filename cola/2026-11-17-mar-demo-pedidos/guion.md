@@ -4,4 +4,4 @@
 [3-9 s] Entra al link, ve la carta con los precios de hoy.
 [9-16 s] Toca más en lo que quiere: una muzza, una napo, una docena de empanadas.
 [16-23 s] Y toca «Pedir por WhatsApp». A vos te llega el pedido completo, escrito, listo para preparar.
-[23-26 s] Si tu local toma pedidos, escribime por DM y lo armamos con tu carta.
+[23-26 s] Si tu local toma pedidos, escribime por DM o entrá a galno punto com punto ar.
